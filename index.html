@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAVARDT | ROI Intelligence Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0A0A0B;
+            --card: #141416;
+            --accent: #00D4FF;
+            --text: #E4E4E7;
+            --text-dim: #A1A1AA;
+            --border: #27272A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 16px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .results {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stat-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-card:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 15px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .projection-badge {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-dim);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <div class="lang-toggle">
+            <button class="lang-btn" onclick="setLang('pt')" id="btn-pt">PT</button>
+            <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+        </div>
+
+        <header>
+            <div class="logo">TAVARDT.</div>
+            <h1 id="title">ROI Intelligence Simulator</h1>
+            <p class="subtitle" id="subtitle">High-Ticket Scale Modeling & Diminishing Returns Analytics</p>
+        </header>
+
+        <div class="grid">
+            <div class="inputs">
+                <div class="input-group">
+                    <label id="label-spend">Current Monthly Spend</label>
+                    <input type="number" id="spend" value="1000" oninput="update()">
+                </div>
+                <div class="input-group">
+                    <label id="label-revenue">Current Monthly Revenue</label>
+                    <input type="number" id="revenue" value="5000" oninput="update()">
+                </div>
+                <div class="input-group">
+                    <label id="label-target">Target Spend</label>
+                    <input type="number" id="target" value="5000" oninput="update()">
+                </div>
+            </div>
+
+            <div class="results">
+                <div class="stat-card">
+                    <span class="stat-label" id="label-cur-roas">Current ROAS</span>
+                    <span class="stat-value" id="cur-roas">5.00x</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label"><span id="label-proj-roas">Projected ROAS</span> <span class="projection-badge" id="badge-scaled">Scaled</span></span>
+                    <span class="stat-value" id="proj-roas">3.93x</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label" id="label-proj-rev">Projected Revenue</span>
+                    <span class="stat-value" id="proj-rev">$3,930.00</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label" id="label-leak">Efficiency Leakage</span>
+                    <span class="stat-value" style="color: #FF4B4B;" id="leak">21.4%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-note" id="footer">
+            Proprietary Diminishing Returns Coefficient: 0.85 | TAVARDT Elite Engineering
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+
+        const i18n = {
+            en: {
+                title: "ROI Intelligence Simulator",
+                subtitle: "High-Ticket Scale Modeling & Diminishing Returns Analytics",
+                labelSpend: "Current Monthly Spend",
+                labelRevenue: "Current Monthly Revenue",
+                labelTarget: "Target Spend",
+                labelCurRoas: "Current ROAS",
+                labelProjRoas: "Projected ROAS",
+                labelProjRev: "Projected Revenue",
+                labelLeak: "Efficiency Leakage",
+                badgeScaled: "Scaled",
+                footer: "Proprietary Diminishing Returns Coefficient: 0.85 | TAVARDT Elite Engineering",
+                currency: "$",
+                locale: "en-US"
+            },
+            pt: {
+                title: "Simulador de Inteligência ROI",
+                subtitle: "Modelagem de Escala High-Ticket & Análise de Retornos Decrescentes",
+                labelSpend: "Investimento Mensal Atual",
+                labelRevenue: "Faturamento Mensal Atual",
+                labelTarget: "Meta de Investimento",
+                labelCurRoas: "ROAS Atual",
+                labelProjRoas: "ROAS Projetado",
+                labelProjRev: "Faturamento Projetado",
+                labelLeak: "Perda de Eficiência",
+                badgeScaled: "Escalado",
+                footer: "Coeficiente de Retornos Decrescentes Proprietário: 0.85 | Engenharia de Elite TAVARDT",
+                currency: "R$",
+                locale: "pt-BR"
+            }
+        };
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            
+            const t = i18n[lang];
+            document.getElementById('title').innerText = t.title;
+            document.getElementById('subtitle').innerText = t.subtitle;
+            document.getElementById('label-spend').innerText = t.labelSpend;
+            document.getElementById('label-revenue').innerText = t.labelRevenue;
+            document.getElementById('label-target').innerText = t.labelTarget;
+            document.getElementById('label-cur-roas').innerText = t.labelCurRoas;
+            document.getElementById('label-proj-roas').innerText = t.labelProjRoas;
+            document.getElementById('label-proj-rev').innerText = t.labelProjRev;
+            document.getElementById('label-leak').innerText = t.labelLeak;
+            document.getElementById('badge-scaled').innerText = t.badgeScaled;
+            document.getElementById('footer').innerText = t.footer;
+
+            update();
+        }
+
+        function update() {
+            const spend = parseFloat(document.getElementById('spend').value) || 0;
+            const revenue = parseFloat(document.getElementById('revenue').value) || 0;
+            const target = parseFloat(document.getElementById('target').value) || 0;
+
+            if (spend <= 0 || revenue <= 0 || target <= 0) return;
+
+            const curROAS = revenue / spend;
+            const decayFactor = 0.85;
+            const spendRatio = target / spend;
+            
+            const projROAS = curROAS * Math.pow(spendRatio, decayFactor - 1);
+            const projRev = target * projROAS;
+            const leakage = (1 - (projROAS / curROAS)) * 100;
+
+            const t = i18n[currentLang];
+            document.getElementById('cur-roas').innerText = curROAS.toFixed(2) + 'x';
+            document.getElementById('proj-roas').innerText = projROAS.toFixed(2) + 'x';
+            document.getElementById('proj-rev').innerText = t.currency + ' ' + projRev.toLocaleString(t.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('leak').innerText = leakage.toFixed(1) + '%';
+        }
+
+        update();
+    </script>
+</body>
+</html>
