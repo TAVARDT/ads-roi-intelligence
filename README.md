@@ -3,13 +3,14 @@
 <div align="center">
   <p>Elite mathematical utilities for paid traffic ROI analysis and scale projection. Designed for high-ticket performance marketing.</p>
   <p>
-    <a href="#-english">🇺🇸 English</a> | 
-    <a href="#-português">🇧🇷 Português</a>
+    <a href="#english">🇺🇸 English</a> | 
+    <a href="#português">🇧🇷 Português</a>
   </p>
 </div>
 
 ***
 
+<a id="english"></a>
 ## 🇺🇸 English
 
 ### Overview
@@ -29,11 +30,12 @@ const projection = ROI_Calculator.projectScale(1000, 5000, 5.0);
 
 ### Contact & Services
 Looking for elite paid traffic management, scale strategy, or ROI auditing?
-* Website: [ag.tavardt.com/paid-traffic](https://ag.tavardt.com/)
+* Website: [ag.tavardt.com/paid-media/](https://ag.tavardt.com/paid-media/)
 * Email: contact@tavardt.com
 
 ***
 
+<a id="português"></a>
 ## 🇧🇷 Português
 
 ### Visão Geral
